@@ -1,0 +1,35 @@
+/*** General ***/
+* {
+  padding: 0;
+  margin: 0;
+}
+
+/*** Layout ***/
+.layout-wrapper {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 1fr 378px;
+  grid-template-rows: 100px 1fr 80px;
+  grid-template-areas:
+    "header header"
+    "main sidebar"
+    "footer footer";
+}
+
+/*** Header ***/
+header {
+  grid-area: header;
+  background-color: #476c52;
+  display: flex;
+  align-items: center;
+}
+
+/*** Footer ***/
+footer {
+  grid-area: footer;
+  background-color: #e8e8e8;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding-left: 100px;
+}
