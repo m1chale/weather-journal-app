@@ -1,4 +1,4 @@
-# Template Project
+# Weather Journal App
 
 ## Usage
 
@@ -9,7 +9,7 @@ To use the template do the following steps:
 3. Delete the .git folder
 4. Run: "git init"
 
-After running these steps you will have a fresh git repositorys without the history of the template
+After running these steps you will have a fresh git repository without the history of the template.
 
 ## Project description
 
@@ -34,15 +34,9 @@ The documentation is built with JsDoc, see in:
 
     /docs/index.html
 
-You can create the documentation by running one of the following commands in the terminal.
+You can create the documentation by running the following command in the terminal.
 
-For a single File:
-
-    jsdoc filename.js
-
-For the whole directory:
-
-    jsdoc ./ -r
+    npm run docu
 
 ## TODO
 
@@ -55,4 +49,5 @@ Add script to package.json to add the correct config file to the repo
     }
 
 Thanks for reading
+
 Michael
