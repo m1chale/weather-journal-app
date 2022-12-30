@@ -38,16 +38,6 @@ You can create the documentation by running the following command in the termina
 
     npm run docu
 
-## TODO
-
-Add script to package.json to add the correct config file to the repo
-
-    {
-        "scripts": {
-        "doc": "jsdoc -c jsdoc.conf.json"
-        }
-    }
-
 Thanks for reading
 
 Michael
