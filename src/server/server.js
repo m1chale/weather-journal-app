@@ -25,6 +25,12 @@ const Joi = require("joi");
  * ****************************************************
  * Define data objects
  */
+
+/**
+ * weatherRecords holding all the weatherData
+ * @type {object}
+ * @const
+ */
 const weatherRecords = [
   {
     id: 1,
