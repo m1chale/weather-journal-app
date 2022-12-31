@@ -1,3 +1,11 @@
+/** Express router providing user related routes
+ * @module server/server
+ * @requires express
+ * @requires body-parser
+ * @requires cors
+ * @requires joi
+ */
+
 /**
  * ****************************************************
  * Define environment
@@ -12,8 +20,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const Joi = require("joi");
-const { func } = require("joi");
-// const { runInNewContext } = require("vm"); ???
 
 /**
  * ****************************************************
@@ -37,7 +43,6 @@ const weatherRecords = [
 const app = express();
 
 /* Middleware*/
-//Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -59,10 +64,24 @@ function listening() {
  * Route handling
  */
 
+/**
+ * Route serving weather data.
+ * @name get/weather-records
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 app.get("/api/weather-records", (request, response) => {
   response.send(weatherRecords);
 });
 
+/**
+ * Route serving single weather record.
+ * @name get/weather-records
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 app.get("/api/weather-records/:id", (request, response) => {
   //request.query = sortBy=name
   const weatherData = weatherRecords.find(
@@ -74,6 +93,13 @@ app.get("/api/weather-records/:id", (request, response) => {
   response.send(weatherData);
 });
 
+/**
+ * Route accepting single weather record.
+ * @name post/weather-records
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 app.post("/api/weather-records", (request, response) => {
   const { error } = validateWeatherData(request.body);
 
@@ -90,6 +116,13 @@ app.post("/api/weather-records", (request, response) => {
   response.send(weatherData);
 });
 
+/**
+ * Route updating single weather record.
+ * @name put/weather-records
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 app.put("/api/weather-records/:id", (request, response) => {
   const weatherData = weatherRecords.find(
     (elem) => elem.id === parseInt(request.params.id)
@@ -108,6 +141,13 @@ app.put("/api/weather-records/:id", (request, response) => {
   response.send(weatherData);
 });
 
+/**
+ * Route deleting single weather record.
+ * @name delete/weather-records
+ * @function
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 app.delete("/api/weather-records/:id", (request, response) => {
   const weatherData = weatherRecords.find(
     (elem) => elem.id === parseInt(request.params.id)
@@ -125,6 +165,13 @@ app.delete("/api/weather-records/:id", (request, response) => {
  * Validation
  */
 
+/**
+ * Route serving weather data.
+ * @name validateWeatherData
+ * @function
+ * @param {Object} weatherData - received weather record
+ * @returns {Joi.ObjectSchema<any>} - validation result
+ */
 function validateWeatherData(weatherData) {
   const validationSchema = Joi.object({
     date: Joi.string().required(),

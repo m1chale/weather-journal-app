@@ -1,3 +1,7 @@
+/** Javascript for Website handling
+ * @module website/app
+ */
+
 /**
  * ****************************************************
  * Define Global Variables
