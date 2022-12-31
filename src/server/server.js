@@ -1,13 +1,37 @@
-// Environment
-const PORT = process.env.PORT || 8080;
+/**
+ * ****************************************************
+ * Define environment
+ */
+const port = process.env.PORT || 8080;
 
-// Setup empty JS object to act as endpoint for all routes
-projectData = {};
-
-// Require Express to run server and routes
+/**
+ * ****************************************************
+ * Define dependencies
+ */
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const Joi = require("joi");
+const { func } = require("joi");
+// const { runInNewContext } = require("vm"); ???
+
+/**
+ * ****************************************************
+ * Define data objects
+ */
+const weatherRecords = [
+  {
+    id: 1,
+    date: new Date(1995, 11, 17),
+    temperature: 25,
+    feelings: "nice weather",
+  },
+];
+
+/**
+ * ****************************************************
+ * Server configuration
+ */
 
 // Start up an instance of app
 const app = express();
@@ -24,8 +48,89 @@ app.use(cors());
 app.use(express.static("src/website"));
 
 // Setup Server
-app.listen(PORT, listening);
+app.listen(port, listening);
 
 function listening() {
-  console.log(`Server is up and running on port: ${PORT}`);
+  console.log(`Server is up and listening on port: ${port} ...`);
+}
+
+/**
+ * ****************************************************
+ * Route handling
+ */
+
+app.get("/api/weather-records", (request, response) => {
+  response.send(weatherRecords);
+});
+
+app.get("/api/weather-records/:id", (request, response) => {
+  //request.query = sortBy=name
+  const weatherData = weatherRecords.find(
+    (elem) => elem.id === parseInt(request.params.id)
+  );
+
+  if (!weatherData) return response.status(404).send("ID not found.");
+
+  response.send(weatherData);
+});
+
+app.post("/api/weather-records", (request, response) => {
+  const { error } = validateWeatherData(request.body);
+
+  if (error) return response.status(400).send(error.details[0].message);
+
+  const weatherData = {
+    id: weatherRecords.length + 1,
+    date: request.body.date,
+    temperature: request.body.temperature,
+    feelings: request.body.feelings,
+  };
+
+  weatherRecords.push(weatherData);
+  response.send(weatherData);
+});
+
+app.put("/api/weather-records/:id", (request, response) => {
+  const weatherData = weatherRecords.find(
+    (elem) => elem.id === parseInt(request.params.id)
+  );
+
+  if (!weatherData) return response.status(404).send("ID not found.");
+
+  const { error } = validateWeatherData(request.body);
+
+  if (error) return response.status(400).send(error.details[0].message);
+
+  weatherData.date = request.body.date;
+  weatherData.temperature = request.body.temperature;
+  weatherData.feelings = request.body.feelings;
+
+  response.send(weatherData);
+});
+
+app.delete("/api/weather-records/:id", (request, response) => {
+  const weatherData = weatherRecords.find(
+    (elem) => elem.id === parseInt(request.params.id)
+  );
+
+  if (!weatherData) return response.status(404).send("ID not found.");
+
+  const index = weatherRecords.indexOf(weatherData);
+  weatherRecords.splice(index, 1);
+  response.send(weatherData);
+});
+
+/**
+ * ****************************************************
+ * Validation
+ */
+
+function validateWeatherData(weatherData) {
+  const validationSchema = Joi.object({
+    date: Joi.string().required(),
+    temperature: Joi.number().required(),
+    feelings: Joi.string().min(3).required(),
+  });
+
+  return validationSchema.validate(weatherData);
 }
