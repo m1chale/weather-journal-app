@@ -31,14 +31,7 @@ const Joi = require("joi");
  * @type {object}
  * @const
  */
-const weatherRecords = [
-  {
-    id: 1,
-    date: new Date(1995, 11, 17),
-    temperature: 25,
-    feelings: "nice weather",
-  },
-];
+const weatherRecords = [];
 
 /**
  * ****************************************************
