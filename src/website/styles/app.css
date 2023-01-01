@@ -58,7 +58,9 @@ main {
   background: rgba(59, 74, 107, 0.4);
 }
 
-#entryHolder {
+#historyHolder li {
+  display: flex;
+  gap: 25px;
 }
 
 #date {
